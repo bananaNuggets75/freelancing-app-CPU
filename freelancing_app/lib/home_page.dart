@@ -9,55 +9,83 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<String> workTypes = ['Web Developer', 'Math Tutoring', 'Graphic Design', 'Writing'];
-
   List<String> selectedWorkTypes = [];
 
-  void _showWorkTypeFilterDialog() {
-    showDialog(
+  void _openFilterDrawer() {
+    showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Select Work Types'),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: ListBody(
-                  children: workTypes.map((workType) {
-                    return CheckboxListTile(
-                      title: Text(workType),
-                      value: selectedWorkTypes.contains(workType),
-                      onChanged: (bool? value) {
-                        setState(() {
-                          if (value == true) {
-                            selectedWorkTypes.add(workType);
-                          } else {
-                            selectedWorkTypes.remove(workType);
-                          }
-                        });
-                      },
-                    );
-                  }).toList(),
-                ),
-              );
-            },
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Apply Filters'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                print('Selected Work Types: $selectedWorkTypes');
-              },
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return _buildFilterDrawer(setState);
+          },
         );
       },
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+    );
+  }
+
+  Widget _buildFilterDrawer(StateSetter setModalState) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Filter',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            'Select Work Types',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          Expanded(
+            child: ListView(
+              children: workTypes.map((workType) {
+                return CheckboxListTile(
+                  title: Text(workType),
+                  value: selectedWorkTypes.contains(workType),
+                  onChanged: (bool? value) {
+                    setModalState(() {
+                      if (value == true) {
+                        selectedWorkTypes.add(workType);
+                      } else {
+                        selectedWorkTypes.remove(workType);
+                      }
+                    });
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  setModalState(() {
+                    selectedWorkTypes.clear();
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Clear Filters', style: TextStyle(color: Colors.orange)),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  print('Selected Work Types: $selectedWorkTypes');
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                child: const Text('Apply'),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -66,26 +94,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('HireMe'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_alt),
+            onPressed: _openFilterDrawer,
+          ),
+        ],
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text('Welcome to Home Page'),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _showWorkTypeFilterDialog,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 15.0),
-                backgroundColor: Colors.blueAccent,
-              ),
-              child: const Text(
-                'Filter Work Types',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
-        ),
+        child: const Text('Welcome to Home Page'),
       ),
     );
   }
