@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'profile_page.dart';  // Import the profile page
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +15,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
+    print("Selected Index: $index");
   }
 
   Widget _getSelectedPage() {
@@ -28,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       case 3:
         return Center(child: Text('Search Page'));
       case 4:
-        return ProfilePage();  // Navigates to the profile page
+        return ProfilePage();
       default:
         return Center(child: Text('Discovery Page'));
     }
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.filter_alt),
             onPressed: () {
-              // filter(pass)
+              // filter (pass)
             },
           ),
         ],
