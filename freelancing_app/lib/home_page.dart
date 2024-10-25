@@ -8,85 +8,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> workTypes = ['Web Developer', 'Math Tutoring', 'Graphic Design', 'Writing'];
-  List<String> selectedWorkTypes = [];
+  int _selectedIndex = 0;
 
-  void _openFilterDrawer() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return _buildFilterDrawer(setState);
-          },
-        );
-      },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-    );
-  }
-
-  Widget _buildFilterDrawer(StateSetter setModalState) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Filter',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Select Work Types',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-          ),
-          Expanded(
-            child: ListView(
-              children: workTypes.map((workType) {
-                return CheckboxListTile(
-                  title: Text(workType),
-                  value: selectedWorkTypes.contains(workType),
-                  onChanged: (bool? value) {
-                    setModalState(() {
-                      if (value == true) {
-                        selectedWorkTypes.add(workType);
-                      } else {
-                        selectedWorkTypes.remove(workType);
-                      }
-                    });
-                  },
-                );
-              }).toList(),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                onPressed: () {
-                  setModalState(() {
-                    selectedWorkTypes.clear();
-                  });
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Clear Filters', style: TextStyle(color: Colors.orange)),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  print('Selected Work Types: $selectedWorkTypes');
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-                child: const Text('Apply'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    print("Selected Index: $index");
   }
 
   @override
@@ -97,12 +25,41 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_alt),
-            onPressed: _openFilterDrawer,
+            onPressed: () {
+            },
           ),
         ],
       ),
       body: Center(
-        child: const Text('Welcome to Home Page'),
+        child: Text('Selected Page Index: $_selectedIndex'),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Discovery',
+          ),
+          // BottomNavigationBarItem( // note sure yet
+            // icon: Icon(Icons.work),
+            // label: 'Jobs',
+          //),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.location_on),
+            label: 'Nearby',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Me',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
     );
   }
