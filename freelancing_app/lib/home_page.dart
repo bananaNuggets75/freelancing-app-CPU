@@ -18,7 +18,6 @@ class _HomePageState extends State<HomePage> {
     print("Selected Index: $index");
   }
 
-
   Widget _getSelectedPage() {
     switch (_selectedIndex) {
       case 0:
@@ -36,37 +35,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('HireMe'),
-
         backgroundColor: Colors.teal,
-
-
         actions: [
           IconButton(
             icon: const Icon(Icons.filter_alt),
             onPressed: () {
-
               // filter (pass)
             },
           ),
         ],
       ),
       body: _getSelectedPage(),
-
-            },
-          ),
-        ],
-      ),
-      body: Center(
-        child: Text('Selected Page Index: $_selectedIndex'),
-      ),
-
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
@@ -74,17 +58,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.explore),
             label: 'Discovery',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.work),
             label: 'Jobs',
           ),
-
-          // BottomNavigationBarItem( // note sure yet
-            // icon: Icon(Icons.work),
-            // label: 'Jobs',
-          //),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
             label: 'Nearby',
