@@ -37,7 +37,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: Center(
-              child: Text("Results for: $searchText"), // Replace with actual results
+              child: Text("Results for: $searchText"),
             ),
           ),
         ],

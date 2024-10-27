@@ -10,12 +10,41 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  String searchQuery = '';
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
     print("Selected Index: $index");
+  }
+
+  Widget _searchPage() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: 'Search...',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (query) {
+              setState(() {
+                searchQuery = query;
+              });
+              print("Searching for: $query");
+            },
+          ),
+        ),
+        Expanded(
+          child: searchQuery.isEmpty
+              ? Center(child: Text('Enter a search query'))
+              : Center(child: Text('Results for "$searchQuery"')), // Placeholder for search results
+        ),
+      ],
+    );
   }
 
   Widget _getSelectedPage() {
@@ -27,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       case 2:
         return Center(child: Text('Nearby Page'));
       case 3:
-        return Center(child: Text('Search Page'));
+        return _searchPage(); // Display search functionality on Search Page
       case 4:
         return ProfilePage();
       default:
@@ -45,7 +74,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.filter_alt),
             onPressed: () {
-              // filter (pass)
+              // Open filter dialog or navigate to filter options
             },
           ),
         ],

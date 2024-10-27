@@ -18,12 +18,23 @@ class _FiltersWidgetState extends State<FiltersWidget> {
   final List<String> jobTypes = ['Full-time', 'Part-time', 'Freelance'];
   final List<String> locations = ['New York', 'San Francisco', 'Remote'];
 
+  // Reset the filters to their default values
+  void _clearFilters() {
+    setState(() {
+      searchQuery = null;
+      selectedJobType = null;
+      selectedLocation = null;
+      isRemote = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           const Text(
             'Filter Options',
@@ -33,7 +44,7 @@ class _FiltersWidgetState extends State<FiltersWidget> {
 
           // Search TextField
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Search',
               border: OutlineInputBorder(),
               prefixIcon: Icon(Icons.search),
@@ -82,7 +93,7 @@ class _FiltersWidgetState extends State<FiltersWidget> {
           ),
           const SizedBox(height: 20),
 
-          // Remote Work Checkbox
+          // Remote Checkbox
           CheckboxListTile(
             title: const Text('Remote'),
             value: isRemote,
@@ -94,18 +105,28 @@ class _FiltersWidgetState extends State<FiltersWidget> {
           ),
           const SizedBox(height: 20),
 
-          // Apply Filters Button
-          ElevatedButton(
-            onPressed: () {
-              widget.onApplyFilters({
-                'searchQuery': searchQuery,
-                'jobType': selectedJobType,
-                'location': selectedLocation,
-                'isRemote': isRemote,
-              });
-              Navigator.pop(context);
-            },
-            child: const Text('Apply Filters'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Clear Filters Button
+              TextButton(
+                onPressed: _clearFilters,
+                child: const Text('Clear Filters'),
+              ),
+              // Apply Filters Button
+              ElevatedButton(
+                onPressed: () {
+                  widget.onApplyFilters({
+                    'searchQuery': searchQuery,
+                    'jobType': selectedJobType,
+                    'location': selectedLocation,
+                    'isRemote': isRemote,
+                  });
+                  Navigator.pop(context);
+                },
+                child: const Text('Apply Filters'),
+              ),
+            ],
           ),
         ],
       ),
