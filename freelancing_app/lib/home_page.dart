@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelancing_app/freelancer_page.dart';
 import 'package:freelancing_app/search/filters_widget.dart';
 import 'profile_page.dart';
 
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return _buildDiscoveryPage();
       case 1:
-        return Center(child: Text('Jobs Page'));
+        return FreelancerPage();
       case 2:
         return Center(child: Text('Nearby Page'));
       case 3:
@@ -122,7 +123,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.work),
-            label: 'Jobs',
+            label: 'Freelancers',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.location_on),
