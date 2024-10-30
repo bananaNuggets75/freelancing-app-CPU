@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:freelancing_app/search/filters_widget.dart';
 import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,58 +11,90 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  String searchQuery = '';
+  String _discoverySearchQuery = ''; 
+  String _searchPageQuery = '';
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    print("Selected Index: $index");
-  }
-
-  Widget _searchPage() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            decoration: InputDecoration(
-              labelText: 'Search...',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.search),
-            ),
-            onChanged: (query) {
-              setState(() {
-                searchQuery = query;
-              });
-              print("Searching for: $query");
-            },
-          ),
-        ),
-        Expanded(
-          child: searchQuery.isEmpty
-              ? Center(child: Text('Enter a search query'))
-              : Center(child: Text('Results for "$searchQuery"')), // Placeholder for search results
-        ),
-      ],
-    );
   }
 
   Widget _getSelectedPage() {
     switch (_selectedIndex) {
       case 0:
-        return Center(child: Text('Discovery Page'));
+        return _buildDiscoveryPage();
       case 1:
         return Center(child: Text('Jobs Page'));
       case 2:
         return Center(child: Text('Nearby Page'));
       case 3:
-        return _searchPage(); // Display search functionality on Search Page
+        return _buildSearchPage();
       case 4:
         return ProfilePage();
       default:
         return Center(child: Text('Discovery Page'));
     }
+  }
+
+  Widget _buildDiscoveryPage() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search jobs, skills, etc.',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _discoverySearchQuery = value;
+              });
+            },
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Text(
+              'Discovery Results for: "$_discoverySearchQuery"',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchPage() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search anything...',
+              border: OutlineInputBorder(),
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: (value) {
+              setState(() {
+                _searchPageQuery = value;
+              });
+            },
+          ),
+        ),
+        Expanded(
+          child: Center(
+            child: Text(
+              'Search Page Results for: "$_searchPageQuery"',
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -74,7 +107,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: const Icon(Icons.filter_alt),
             onPressed: () {
-              // Open filter dialog or navigate to filter options
+              _openFilterDialog();
             },
           ),
         ],
@@ -108,6 +141,22 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  // Method to open filter dialog
+  void _openFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: FiltersWidget(
+            onApplyFilters: (filters) {
+              print("Applied Filters: $filters");
+            },
+          ),
+        );
+      },
     );
   }
 }
