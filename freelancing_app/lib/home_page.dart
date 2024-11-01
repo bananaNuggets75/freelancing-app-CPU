@@ -39,34 +39,53 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildDiscoveryPage() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search jobs, skills, etc.',
-              border: OutlineInputBorder(),
-              prefixIcon: Icon(Icons.search),
+    return ListView.builder(
+      padding: const EdgeInsets.all(8.0),
+      itemCount: 10, // Number of posts to display
+      itemBuilder: (context, index) {
+        return Card(
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.teal,
+                      child: Icon(Icons.person, color: Colors.white),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      "Freelancer ${index + 1}",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "This is a sample post description for discovery feed item ${index + 1}.",
+                  style: TextStyle(fontSize: 16),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.thumb_up_alt_outlined),
+                    Icon(Icons.comment_outlined),
+                    Icon(Icons.share_outlined),
+                  ],
+                ),
+              ],
             ),
-            onChanged: (value) {
-              setState(() {
-                _discoverySearchQuery = value;
-              });
-            },
           ),
-        ),
-        Expanded(
-          child: Center(
-            child: Text(
-              'Discovery Results for: "$_discoverySearchQuery"',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
+
 
   Widget _buildSearchPage() {
     return Column(

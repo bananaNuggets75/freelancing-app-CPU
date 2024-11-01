@@ -1,6 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:freelancing_app/search/filters_widget.dart';
 
-class FreelancerPage extends StatelessWidget {
+class FreelancerPage extends StatefulWidget {
+  @override
+  _FreelancerPageState createState() => _FreelancerPageState();
+}
+
+class _FreelancerPageState extends State<FreelancerPage> {
+  // List of freelancers
+  final List<Freelancer> freelancers = [
+    Freelancer("Alice", "Part-time Web Developer", "\$20/hr", "100% Job Success", ["Flutter", "Dart"], true, "Part-time", "San Francisco", true),
+    Freelancer("Bob", "Graphic Designer", "\$25/hr", "95% Job Success", ["Photoshop", "Illustrator"], false, "Freelance", "Remote", true),
+    Freelancer("Charlie", "Full-time Data Scientist", "\$30/hr", "90% Job Success", ["Python", "Machine Learning"], false, "Full-time", "New York", false),
+    // Add more freelancers as needed
+  ];
+
+  List<Freelancer> filteredFreelancers = [];
+  String? searchQuery;
+  String? selectedJobType;
+  String? selectedLocation;
+  bool isRemote = false;
+
+  @override
+  void initState() {
+    super.initState();
+    filteredFreelancers = freelancers; // Initially show all freelancers
+  }
+
+  void _applyFilters(Map<String, dynamic> filters) {
+    setState(() {
+      searchQuery = filters['searchQuery'];
+      selectedJobType = filters['jobType'];
+      selectedLocation = filters['location'];
+      isRemote = filters['isRemote'];
+
+      // Filtering logic
+      filteredFreelancers = freelancers.where((freelancer) {
+        bool matchesQuery = searchQuery == null || freelancer.name.toLowerCase().contains(searchQuery!.toLowerCase());
+        bool matchesJobType = selectedJobType == null || freelancer.jobType.toLowerCase().contains(selectedJobType!.toLowerCase());
+        bool matchesLocation = selectedLocation == null || freelancer.location == selectedLocation;
+        bool matchesRemote = !isRemote || freelancer.isRemote;
+
+        return matchesQuery && matchesJobType && matchesLocation && matchesRemote;
+      }).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -10,7 +55,12 @@ class FreelancerPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
-              // Add search functionality
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return FiltersWidget(onApplyFilters: _applyFilters);
+                },
+              );
             },
           ),
         ],
@@ -20,31 +70,19 @@ class FreelancerPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Category Filter Chips
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  FilterChipWidget("Popular"),
-                  FilterChipWidget("Graphic Design"),
-                  FilterChipWidget("Web Dev"),
-                  FilterChipWidget("AI & ML"),
-                  // Add more categories as needed
-                ],
-              ),
-            ),
             SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: 10, // replace with actual freelancer count
+                itemCount: filteredFreelancers.length,
                 itemBuilder: (context, index) {
+                  final freelancer = filteredFreelancers[index];
                   return FreelancerCard(
-                    name: "Freelancer Name",
-                    role: "Specialization or title",
-                    rate: "\$20/hr",
-                    jobSuccess: "100% Job Success",
-                    skills: ["Skill1", "Skill2", "Skill3"],
-                    availableNow: index % 2 == 0, // Toggle for demonstration
+                    name: freelancer.name,
+                    role: freelancer.role,
+                    rate: freelancer.rate,
+                    jobSuccess: freelancer.jobSuccess,
+                    skills: freelancer.skills,
+                    availableNow: freelancer.availableNow,
                   );
                 },
               ),
@@ -56,20 +94,18 @@ class FreelancerPage extends StatelessWidget {
   }
 }
 
-class FilterChipWidget extends StatelessWidget {
-  final String label;
-  FilterChipWidget(this.label);
+class Freelancer {
+  final String name;
+  final String role;
+  final String rate;
+  final String jobSuccess;
+  final List<String> skills;
+  final bool availableNow;
+  final String jobType; // New property for job type
+  final String location; // New property for location
+  final bool isRemote; // New property for remote status
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-      child: Chip(
-        label: Text(label),
-        backgroundColor: Colors.grey[200],
-      ),
-    );
-  }
+  Freelancer(this.name, this.role, this.rate, this.jobSuccess, this.skills, this.availableNow, this.jobType, this.location, this.isRemote);
 }
 
 class FreelancerCard extends StatelessWidget {
@@ -126,12 +162,10 @@ class FreelancerCard extends StatelessWidget {
             Wrap(
               spacing: 6.0,
               runSpacing: -8.0,
-              children: skills
-                  .map((skill) => Chip(
+              children: skills.map((skill) => Chip(
                 label: Text(skill),
                 backgroundColor: Colors.grey[200],
-              ))
-                  .toList(),
+              )).toList(),
             ),
           ],
         ),
