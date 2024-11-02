@@ -1,31 +1,36 @@
-## HireMe App
+## Freelancing App
 
-HireMe is a Flutter-based mobile application designed to connect freelancers with clients seeking services. Users can browse job listings, discover nearby opportunities, and search for specific jobs using filters to find the best match.
+`HireMe` is a mobile application that connects freelancers with clients seeking services in a social-media-inspired interface. The app allows clients to easily find skilled professionals, while freelancers can showcase their skills and availability.
 
 ### Table of Contents
 
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Navigation](#navigation)
+- [Project Outline](#project-outline)
+- [Contributing](#contributing)
+- [License](#license)
 
 ### Features
 
-- **Discovery Page**: Browse featured job listings to explore popular opportunities.
-- **Jobs Page**: Access a categorized list of job postings.
-- **Nearby Page**: Discover jobs based on your current location.
-- **Search Page**: Find specific jobs using keywords and customizable filters.
-- **Profile Page**: View and edit personal profile details.
-- **Filter Options**: Refine search results by job type, location, and remote options.
+- **Discovery Page**: Acts as a feed similar to a social media platform, where freelancers and clients can see recent updates and interact.
+- **Freelancers Page**: Browse a list of freelancers with information on their skills and experience.
+- **Profile Page**: A detailed profile layout inspired by GitHub, including:
+  - Header with profile picture and bio
+  - Learning interests and current projects
+  - Skills, languages, and tools chart
+  - 'Now Playing' music widget (optional)
+  - Pinned projects section
+- **Navigation Bar**: Provides easy access to the main pages of the app.
 
 ### Installation
 
-To set up a local copy of the HireMe app, follow these steps:
+To set up a local copy of the Freelancing App, follow these steps:
 
 #### Prerequisites
 
 1. Install Flutter on your machine.
-2. Ensure you have an IDE such as Visual Studio Code or Android Studio with the Flutter and Dart plugins.
+2. Ensure you have an IDE such as Android Studio with the Flutter and Dart plugins.
 
 #### Steps
 
@@ -47,20 +52,24 @@ To set up a local copy of the HireMe app, follow these steps:
 
 ### Usage
 
-Once installed, you can explore the HireMe app features to find and apply for jobs or browse freelancers.
+Once installed, you can explore the Freelancing App to view freelancers, discover new profiles, and explore each user's profile page to see their skills, projects, and other information.
 
-### Navigation
+### Project Outline
 
-The app uses a bottom navigation bar with five primary tabs:
+The project is organized with a focus on layout and design, particularly on providing an engaging experience for users through the following pages:
 
-- **Discovery**: Default page for browsing highlighted job opportunities.
-- **Jobs**: Browse job listings sorted by categories.
-- **Nearby**: Discover job postings based on your current location.
-- **Search**: Find specific jobs using the search bar and filters.
-- **Profile (Me)**: View and manage your profile details.
+- **DiscoveryPage**: Serves as a social media-inspired feed for users to see freelancer activities and updates.
+- **FreelancerPage**: Lists freelancers, with plans to add filtering options for skill type in future updates.
+- **ProfilePage**: A comprehensive GitHub-style profile layout for each freelancer, with sections for pinned projects, skill charts, bio, and optional Now Playing widget.
 
-#### Search Feature
+### Contributing
 
-1. Go to the **Search** page by selecting the magnifying glass icon in the bottom navigation bar.
-2. Enter keywords in the search field to find relevant job postings.
-3. Use the filter icon in the top-right corner to apply filters such as job type, location, and remote options.
+If you’re interested in contributing to this project, feel free to fork the repository and submit a pull request. Contributions are always welcome!
+
+### License
+
+This project is licensed under the MIT License.
+
+---
+
+This version should better reflect the current state and goals of your project. Let me know if there’s anything specific you’d like to add!
